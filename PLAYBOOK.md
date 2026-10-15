@@ -102,6 +102,23 @@ Record the pick and why in the ledger before coding.
 - Check CI ~15–30 min later in the same loop if time allows (GraphQL statusCheckRollup). Red →
   fix now.
 
+## 7b. Clean up (every loop, before Learn) — storage must not creep
+Contributions go to **storytold/gridcraft only**. The fork is just where PR branches live
+(GitHub needs a pushable head); never open PRs into the fork, never commit to the fork's `main`.
+- **One build cache.** Every worktree uses `CARGO_TARGET_DIR=/home/user/gridcraft/target`; never
+  create per-branch target dirs.
+- **Remove finished worktrees:** after a PR is pushed, `git worktree remove --force <dir>` and
+  `git branch -D <branch>`; `git worktree prune`.
+- **Cap the build cache at 12 GB:** if `du -s target` exceeds it, delete
+  `target/debug/incremental` first; if still over, `cargo clean`. Report sizes in the ledger row.
+- **No stray files:** logs and scratch go in the session scratchpad, never in the repo; no
+  binaries, workbooks or screenshots are ever committed.
+- **Fork branches:** delete the fork branch (`git push origin --delete <branch>`) once its upstream
+  PR is **merged or closed**. Never delete a branch with an open PR, and never touch `autopilot`.
+- **State files stay small:** keep LEDGER.md to the latest 30 rows (fold older rows into a
+  one-line summary at the top); keep LESSONS.md under ~150 lines by merging and pruning.
+- Before ending: `git status` clean in every remaining worktree, and `df -h` noted.
+
 ## 8. Learn (always last)
 Append to `LEDGER.md` (one row) and to `LESSONS.md` (only *new, evidenced* lessons; edit or
 delete lessons proven wrong). Commit to the `autopilot` branch and push:
