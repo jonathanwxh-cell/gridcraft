@@ -5,3 +5,4 @@ One row per loop. Outcome column is updated by later loops when a PR merges/clos
 | Loop | Date (UTC) | Tended | Task | PR | Gate | Outcome | Notes |
 |---|---|---|---|---|---|---|---|
 | 0 | 2026-10-15 | #701 #918 #1075 #1081 #1093 #1094: all green, mergeable, no review | (bootstrap) | — | — | — | #712 merged 10-13 by echelon with a merge-main fix-up. |
+| 1 | 2026-10-15 | 6 open, all green/mergeable | #1458 sheet-name quoting rule (printer, pivot/Solver, ADDRESS → one core rule) | branch `fix/sheet-name-quoting-1458` pushed (c85d1d8); **PR not opened: token 403** | ✅ 8/8, 4/5 new tests fail before | pending user click | 1st gate ENOSPC at 26 GB → lean build 4.2 GB; independent review: 0 blockers, 1 should-fix applied. Prunable fork branch: `fix/xlsx-ink-roundtrip` (#712 merged). |

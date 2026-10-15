@@ -39,3 +39,12 @@ turn out wrong. Fold stable ones into PLAYBOOK.md every ~5 loops.
   no debug info), one shared target dir, and check `df -h` before starting the gate.
 - **L10. Remote branch deletion is denied by the session's auto-mode policy** ("Git Destructive").
   Don't retry or work around it; list prunable branches for the user instead.
+- **L11. The Hetzner token is fine-grained → it CANNOT open PRs on storytold/gridcraft** (REST and
+  GraphQL both 403 "Resource not accessible by personal access token"). It can read upstream and
+  write the user's own repos. Until a PR-capable credential exists, a loop ends at "branch pushed"
+  and records a compare link (`https://github.com/storytold/gridcraft/compare/main...jonathanwxh-cell:gridcraft:<branch>?expand=1`)
+  in the ledger. **Never build more than 2 pushed-but-unopened branches**; tend and wait instead.
+- **L12. Verify every "fails before" claim by actually running it.** Loop 1's first before-run was
+  cut short by ENOSPC; re-running in a throwaway worktree (upstream code + only the new tests)
+  turned a guess into evidence (4/5 fail with the exact symptoms).
+- **L13. Gate timings (4 vCPU, lean):** cold ~18 min, warm re-run ~9 min; cache steady at 4.2 GB.
