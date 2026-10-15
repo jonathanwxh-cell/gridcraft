@@ -27,3 +27,8 @@ turn out wrong. Fold stable ones into PLAYBOOK.md every ~5 loops.
   GitHub MCP/proxy refuses storytold/gridcraft. GraphQL keeps responses small.
 - **L8. Cold container needs** `rustup target add wasm32-unknown-unknown` and the GTK/X11/Wayland
   `-dev` packages before `cargo xtask ci` can pass the wasm and UI-crate steps.
+
+## User directives (highest priority)
+- **D1. Contribute to storytold/gridcraft, not the fork.** The fork only hosts PR head branches.
+- **D2. Storage must not grow between loops.** One shared target dir, worktrees removed after
+  push, 12 GB build-cache cap, fork branches deleted after merge/close, state files pruned.
