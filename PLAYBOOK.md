@@ -28,8 +28,11 @@ rustup target add wasm32-unknown-unknown
 apt-get update -qq && apt-get install -y -qq --no-install-recommends pkg-config libxkbcommon-dev \
   libwayland-dev libx11-dev libxcursor-dev libxrandr-dev libxi-dev libgtk-3-dev libfontconfig1-dev libfreetype-dev
 ```
-Start a warm-up build in the background right away (`cargo build --workspace --tests`) so the
-gate later is incremental.
+**Always build lean** (export in every shell that runs cargo):
+`export CARGO_TARGET_DIR=/home/user/gridcraft/target CARGO_INCREMENTAL=0 CARGO_PROFILE_DEV_DEBUG=0 CARGO_PROFILE_TEST_DEBUG=0`
+A default debug build of the full gate needs **>26 GB** (dozens of ui-egui test binaries with
+debug info) and fills the session's disk allowance (~40 GB) mid-test. Lean builds are what CI does.
+Start a warm-up build in the background right away (`cargo test --workspace --no-run`).
 
 ## 2. Tend before you build (always first)
 Query all open upstream PRs by `jonathanwxh-cell` (GraphQL: state, mergeable, statusCheckRollup,
@@ -113,8 +116,9 @@ Contributions go to **storytold/gridcraft only**. The fork is just where PR bran
   `target/debug/incremental` first; if still over, `cargo clean`. Report sizes in the ledger row.
 - **No stray files:** logs and scratch go in the session scratchpad, never in the repo; no
   binaries, workbooks or screenshots are ever committed.
-- **Fork branches:** delete the fork branch (`git push origin --delete <branch>`) once its upstream
-  PR is **merged or closed**. Never delete a branch with an open PR, and never touch `autopilot`.
+- **Fork branches:** remote branch deletion is blocked by the session's permission policy; don't
+  attempt it. List merged/closed-PR branches in the ledger instead so the user can prune them
+  (they are a few KB each and don't affect disk).
 - **State files stay small:** keep LEDGER.md to the latest 30 rows (fold older rows into a
   one-line summary at the top); keep LESSONS.md under ~150 lines by merging and pruning.
 - Before ending: `git status` clean in every remaining worktree, and `df -h` noted.

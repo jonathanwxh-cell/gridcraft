@@ -32,3 +32,10 @@ turn out wrong. Fold stable ones into PLAYBOOK.md every ~5 loops.
 - **D1. Contribute to storytold/gridcraft, not the fork.** The fork only hosts PR head branches.
 - **D2. Storage must not grow between loops.** One shared target dir, worktrees removed after
   push, 12 GB build-cache cap, fork branches deleted after merge/close, state files pruned.
+
+## Build & disk
+- **L9. Full gate on default debug profile = 26 GB+ → ENOSPC during `test`.** Loop 1's baseline
+  died at the test step with "No space left on device" after 21 min. Build lean (no incremental,
+  no debug info), one shared target dir, and check `df -h` before starting the gate.
+- **L10. Remote branch deletion is denied by the session's auto-mode policy** ("Git Destructive").
+  Don't retry or work around it; list prunable branches for the user instead.
