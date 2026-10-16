@@ -58,3 +58,13 @@ turn out wrong. Fold stable ones into PLAYBOOK.md every ~5 loops.
 - **L16. Upstream CI queues ~50 min before an 8-min run** (#1595, 10-16 00:22→01:21). Check CI
   ~60–75 min after opening, not 15; a QUEUED check is not a failure. The next loop's tend step
   is the safety net.
+- **L17. Workflow agents can't wait out a background gate.** Round 2's fix agent applied every
+  review finding but was forced to return before its background `cargo xtask ci` finished; the
+  gate process died with it and the work sat uncommitted. → In workflows, agents commit locally
+  and report; the ORCHESTRATOR (or a dedicated gate agent that polls the log until
+  `GATE_EXIT=`) runs the final gate. Launch gates with `nohup … &` writing a `GATE_EXIT=` line.
+- **L18. Two review lenses pay off.** Round 2's correctness lens caught the lone-`~` regression
+  and the uncovered D-function path; the honesty lens caught 3 PR-body claims the before-log
+  didn't support. Neither alone found all of them. Keep both.
+- **L19. Scout dedup works on `is:pr <number>` + latest comments;** 2 scouts / 3 vetted
+  candidates found a measured, unclaimed issue (#1455) in ~6 min.
