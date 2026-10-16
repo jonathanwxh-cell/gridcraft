@@ -35,6 +35,9 @@ debug info) and fills the session's disk allowance (~40 GB) mid-test. Lean build
 Start a warm-up build in the background right away (`cargo test --workspace --no-run`).
 
 ## 2. Tend before you build (always first)
+0. **Pushed-but-unopened branches** listed in LEDGER.md ("PR not opened") → if the token file
+   now exists, merge `upstream/main` into the branch, re-run the gate, push, open the PR (step 7),
+   and update the ledger row. These come before any new work.
 Query all open upstream PRs by `jonathanwxh-cell` (GraphQL: state, mergeable, statusCheckRollup,
 last comments/reviews). For each, in this order:
 1. **Merge conflict** → in the fork branch, `git merge upstream/main` (never rebase/force-push a
@@ -91,8 +94,20 @@ Record the pick and why in the ledger before coding.
 - Commit message: `#<issue>: <imperative summary>` (+ attribution trailers from the session).
   One concern per commit; no model names in commits or PR text.
 - Push to the fork: `git push -u origin <branch>`.
-- Open the PR upstream via `github_api POST /repos/storytold/gridcraft/pulls`
-  `{title, head:"jonathanwxh-cell:<branch>", base:"main", body, maintainer_can_modify:true}`.
+- Open the PR upstream **on the Hetzner box** (Hetzner_Computer `run_command`), using the user's
+  classic `public_repo` token stored at `~/.config/gridcraft-autopilot/pr_token` (never print,
+  echo or copy it; never put it in a session file):
+  ```sh
+  test -s ~/.config/gridcraft-autopilot/pr_token || { echo NO_TOKEN; exit 3; }
+  GH_TOKEN="$(cat ~/.config/gridcraft-autopilot/pr_token)" gh pr create --repo storytold/gridcraft \
+    --base main --head jonathanwxh-cell:<branch> --title '<title>' --body-file - <<'BODY'
+  <body>
+  BODY
+  ```
+  Exit 3 / `NO_TOKEN` → the branch stays "pushed, unopened": record the compare link in the
+  ledger and (max 2 such branches) stop building new work. Use the same token the same way for
+  replies on your own PRs (`gh pr comment`). The fine-grained `GH_TOKEN`/`github_api` stays the
+  read path (GraphQL queries).
 - **PR body shape (modelled on merged #712):**
   1. What was wrong, from the user's point of view, with the issue link (`Fixes part of #N` unless
      it fully closes it → `Fixes #N`).
