@@ -138,6 +138,11 @@ Contributions go to **storytold/gridcraft only**. The fork is just where PR bran
   one-line summary at the top); keep LESSONS.md under ~150 lines by merging and pruning.
 - Before ending: `git status` clean in every remaining worktree, and `df -h` noted.
 
+## 7c. Running a round as a Workflow
+`round.workflow.js` (this branch) is a tested Workflow script for steps 4–6: 2 scouts → vet top 3 →
+build → 2 review lenses → fix. Pass `args: {"upstreamSha": "<sha>"}`. Per L17 the orchestrator,
+not the fix agent, runs the final gate and opens the PR.
+
 ## 8. Learn (always last)
 Append to `LEDGER.md` (one row) and to `LESSONS.md` (only *new, evidenced* lessons; edit or
 delete lessons proven wrong). Commit to the `autopilot` branch and push:
