@@ -55,3 +55,6 @@ turn out wrong. Fold stable ones into PLAYBOOK.md every ~5 loops.
 - **L15. Waiting costs a merge, not a rebuild.** #1458 waited ~8 h for a token; main moved 2
   commits (one touching formula tests). `git merge upstream/main` was clean and the warm gate
   took 5m46s. Always merge + re-gate before opening a branch that has waited.
+- **L16. Upstream CI queues ~50 min before an 8-min run** (#1595, 10-16 00:22→01:21). Check CI
+  ~60–75 min after opening, not 15; a QUEUED check is not a failure. The next loop's tend step
+  is the safety net.
