@@ -136,6 +136,10 @@ Contributions go to **storytold/gridcraft only**. The fork is just where PR bran
   (they are a few KB each and don't affect disk).
 - **State files stay small:** keep LEDGER.md to the latest 30 rows (fold older rows into a
   one-line summary at the top); keep LESSONS.md under ~150 lines by merging and pruning.
+- **End of loop (after the ledger is pushed and no gate is pending):** `rm -rf /home/user/gridcraft/target
+  /root/.cargo/registry/cache /root/.cargo/registry/src`, remove scratch logs, `git worktree prune`,
+  `git gc --prune=now`, and on the box make sure no `/tmp/gc-pr-*` files remain. Everything is
+  regenerable; a clean container is ~11 GB used vs ~16 GB with a warm cache.
 - Before ending: `git status` clean in every remaining worktree, and `df -h` noted.
 
 ## 7c. Running a round as a Workflow
