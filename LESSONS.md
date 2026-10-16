@@ -52,3 +52,6 @@ turn out wrong. Fold stable ones into PLAYBOOK.md every ~5 loops.
   `GH_TOKEN` still wins.** Always run PR writes as `env -u GH_TOKEN -u GITHUB_TOKEN gh …` on the
   box. The token has very broad scopes (incl. delete_repo, admin:org): use it ONLY for
   `gh pr create` / `gh pr comment` / `gh pr edit` on storytold/gridcraft PRs, nothing else.
+- **L15. Waiting costs a merge, not a rebuild.** #1458 waited ~8 h for a token; main moved 2
+  commits (one touching formula tests). `git merge upstream/main` was clean and the warm gate
+  took 5m46s. Always merge + re-gate before opening a branch that has waited.
